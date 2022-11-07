@@ -1,20 +1,22 @@
 <template>
-  <div class="row">
-    <div class="col-12">
-      <nav class="navbar navbar-expand-lg bg-dark">
-        <div class="container-fluid">
-          <a class="navbar-brand" href="/home">
-            <img src="../../../assets/png/logo-pequeno.png" alt="ParkHenriLogo" width="55" height="45">
-            <span class="pl-3">Vue-testes</span>
-          </a>
-          <div class="collapse navbar-collapse" id="navbarNav">
-            <a class="nav-link active" aria-current="page" href="/install">Instalação</a>
-            <a class="nav-link active" aria-current="page" href="/library">Bibliotecas</a>
-          </div>
-        </div>
-      </nav>
-    </div>
-  </div>
+  <b-card title="Card Title" no-body class="teste">
+    <b-card-header header-tag="nav">
+      <b-nav>
+        <span>
+          <img src="../../../assets/png/logo-pequeno.png" alt="ParkHenriLogo" width="55" height="45" />
+        </span>
+        <b-nav-item href="/home">
+          Vue-testes
+        </b-nav-item>
+        <b-nav-item href="/install">
+          Instalação
+        </b-nav-item>
+        <b-nav-item href="/library">
+          Bibliotecas
+        </b-nav-item>
+      </b-nav>
+    </b-card-header>
+  </b-card>
 </template>
 
 <script>
@@ -34,4 +36,8 @@ export default {
 </script>
 
 <style scoped lang="scss">
+.teste{
+  background-color: black;
+  border-radius: 0%;
+}
 </style>

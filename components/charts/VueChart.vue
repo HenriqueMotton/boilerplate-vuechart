@@ -5,19 +5,14 @@
       <h3 class="subTitle mt-4">vue-chartjs</h3>
     </div>
     <div class="col-12 mt-3 pl-5">
-      <button  
-        class="btn btn-outline-primary"
-        @click="activateChart('line')"  
-      >Line</button>
-      <button 
-        class="btn btn-outline-primary"
-        @click="activateChart('bar')"  
-      >Bar</button>
-      <button 
-        class="btn btn-outline-primary"
-        @click="activateChart('pie')"  
-      >Pie</button>
+      <b-form-select
+        v-model="selectedChart"
+        :options="optionsChart"  
+        @change="activateChart(selectedChart)" 
+      >
+      </b-form-select>
     </div>
+    <div class="col-12 divider mt-3 px-0"></div>
     <div class="col-12 mt-3 px-5">
       <pie-chart
         :chartOptions='chartOptionsPie'
@@ -27,11 +22,7 @@
         chartId='myCustomIdPie'
         v-if="pieActive"
       />
-      <line-chart
-        :chartOptions='chartOptionsLine'
-        :chartData='chartDataLine'
-        :height="100"
-        chartId='myCustomIdLine'
+      <FormLineChart
         v-if="lineActive"
       />
       <bar-chart
@@ -46,10 +37,17 @@
 </template>
 <script>
 export default {
-  name: "Home",
+  name: "Graph",
   data() {
     return {
       pieActive: false,
+      selectedChart: null,
+      optionsChart: [
+        { value: null, text: 'Selecione o tipo de gráfico' },
+        { value: 'line', text: 'Line' },
+        { value: 'bar', text: 'Bar' },
+        { value: 'pie', text: 'Pie' },
+      ],
       chartDataPie: {
         labels: [ 'Teste 1', 'Teste 2', 'Teste 3', 'Teste 4', 'Teste 5' ],
         datasets: [ 
@@ -65,24 +63,24 @@ export default {
       },
 
       lineActive: false,
-      chartDataLine: {
-        labels: [ 'Teste 1', 'Teste 2', 'Teste 3', 'Teste 4', 'Teste 5' ],
-        datasets: [ 
-          { 
-            label: 'Plano 1',
-            backgroundColor: 'green',
-            data: [50, 30, 20, 6, 0] 
-          },
-          { 
-            label: 'Plano 2',
-            backgroundColor: 'red',
-            data: [40, 20, 10, 3, 0] 
-          },
-        ]
-      },
-      chartOptionsLine: {
-        responsive: true,
-      },
+      // chartDataLine: {
+      //   labels: [ 'Teste 1', 'Teste 2', 'Teste 3', 'Teste 4', 'Teste 5' ],
+      //   datasets: [ 
+      //     { 
+      //       label: 'Plano 1',
+      //       backgroundColor: 'green',
+      //       data: [50, 30, 20, 6, 0] 
+      //     },
+      //     { 
+      //       label: 'Plano 2',
+      //       backgroundColor: 'red',
+      //       data: [40, 20, 10, 3, 0] 
+      //     },
+      //   ]
+      // },
+      // chartOptionsLine: {
+      //   responsive: true,
+      // },
       
       barActive: false,
       chartDataBar: {
@@ -143,6 +141,7 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
+
 .title{
   font-family: cursive;
 }

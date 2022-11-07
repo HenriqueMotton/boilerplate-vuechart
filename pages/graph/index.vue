@@ -1,5 +1,5 @@
 <template>
-  <TestChart></TestChart>
+  <VueChart></VueChart>
 </template>
 <script>
 export default {
