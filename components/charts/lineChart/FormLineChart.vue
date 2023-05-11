@@ -2,7 +2,7 @@
   <div class="row">
     <div class="col-12">
       <b-form>
-        <div class="row">
+        <div class="row" v-if="!showChart">
           <div class="col-6">
             <b-form-group
               id="input-group-1"
@@ -17,7 +17,17 @@
             </b-form-group>
           </div>
           <div class="col-12">
-            <b-form-group></b-form-group>
+            <b-form-group
+              id="input-group-2"
+              label="Titulo do gráfico:"
+              label-for="input-2"            
+            >
+              <b-form-input
+                id="input-2"
+                v-model="titleChart"
+                placeholder="Digite o titulo"
+              />
+            </b-form-group>
           </div>
         </div>
         <b-form-group>
@@ -40,7 +50,10 @@
     <div 
       class="col-12"
       v-if="showChart"
-    >
+    > 
+      <div class="col-12 mb-2 subtitlePage" align="center">
+        {{ titleChart }}
+      </div>
       <line-chart
         :chartOptions='chartOptionsLine'
         :chartData='chartDataLine'
@@ -90,6 +103,6 @@ export default {
   }
 }
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
   
 </style>

@@ -1,6 +1,7 @@
+import environment from './lib/environment'
+import { resolve } from 'path'
+
 export default {
-  // Disable server-side rendering: https://go.nuxtjs.dev/ssr-mode
-  ssr: true,
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
     title: 'Park Henri',
@@ -11,7 +12,8 @@ export default {
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
       { hid: 'description', name: 'description', content: '' },
-      { name: 'format-detection', content: 'telephone=no' }
+      { name: 'format-detection', content: 'telephone=no' },
+      { hid: 'd4sign-domain-verification', name: 'd4sign-domain-verification',content: 'd3f378e8-f6ab-47cd-a98b-4cb40d038c52'},
     ],
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
@@ -39,11 +41,13 @@ export default {
     '~/components',
     { path: '~/components/home', extensions: ['vue'] },
     { path: '~/components/charts', extensions: ['vue'] },
-    { path: '~/components/charts', extensions: ['vue'] },
+    { path: '~/components/charts/lineChart', extensions: ['vue'] },
     { path: '~/components/layouts/home', extensions: ['vue'] },
+    { path: '~/components/layouts/outside', extensions: ['vue'] },
     { path: '~/components/frameworks', extensions: ['vue'] },
     { path: '~/components/install', extensions: ['vue'] },
     { path: '~/components/shared', extensions: ['vue'] },
+    { path: '~/layouts', extensions: ['vue'] },
   ],
 
   // Modules for dev and build (recommended): https://go.nuxtjs.dev/config-modules
@@ -55,8 +59,54 @@ export default {
     'bootstrap-vue/nuxt',
     // https://go.nuxtjs.dev/axios
     '@nuxtjs/axios',
+    '@nuxtjs/auth-next',
   ],
+  alias: {
+    'lib': resolve(__dirname, './lib'),
+    'node_modules': resolve(__dirname, './node_modules'),
+    'svg': resolve(__dirname, './assets/svg'),
+    './': resolve( './*')
+  },
 
+  auth: { 
+    strategies: { 
+      local: false, 
+      keycloak: { 
+        scheme: 'oauth2', 
+        endpoints: { 
+          authorization: `${environment.KC_URL}/auth/realms/${environment.KC_REALM}/protocol/openid-connect/auth`, 
+          token: `${environment.KC_URL}/auth/realms/${environment.KC_REALM}/protocol/openid-connect/token`, 
+          userInfo: `${environment.KC_URL}/auth/realms/${environment.KC_REALM}/protocol/openid-connect/userinfo`, 
+          logout: `${environment.KC_URL}/auth/realms/${environment.KC_REALM}/protocol/openid-connect/logout?redirect_uri=${encodeURIComponent('http://localhost:3000')}`,
+        }, 
+        token: { 
+          property: 'access_token', 
+          type: 'Bearer', 
+          name: 'Authorization', 
+          maxAge: 300 
+        }, 
+        refreshToken: { 
+          property: 'refresh_token', 
+          maxAge:60 * 60 * 24 * 30 
+        }, 
+        responseType: 'code',
+        grantType: 'authorization_code', 
+        clientId: `${environment.KC_CLIENT_ID}`, 
+        scope: ['openid', 'profile', 'email'], 
+        codeChallengeMethod: 'S256' 
+      } 
+    }, 
+    redirect: { 
+      login: '/login', 
+      logout: '/ ', 
+      home: '/' 
+    } 
+  },
+  // proxy: { 
+  //   '/auth': { 
+  //     target: `${environment.KC_URL}`
+  //   } 
+  // },
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {
     // Workaround to avoid enforcing hard-coded localhost:3000: https://github.com/nuxt-community/axios-module/issues/308

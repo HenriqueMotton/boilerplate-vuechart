@@ -9,7 +9,17 @@
   line-height: 30px;
 }
 
+.subtitlePage{
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 30px;
+}
+
 .divider{
   border-top: solid;
   border-color: rgb(100, 100, 100);
+}
+
+.clickMouse{
+  cursor: pointer;
 }
